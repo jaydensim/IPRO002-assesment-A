@@ -1,12 +1,34 @@
 # IPRO002 *Assesment A*
 **Topic: Concert**
 
+---
+
 ## Business Case:
-Several bands have organised a tour, performing concerts around the country. They would like to organise and produce a cohesive setlist that uses real world data to help them identify the most popular songs in their region. They would like this data to be collected during seat registration, allowing them to structure their performances according to arrivals and departures and during intermissions. The host stadium would like to use this data to inform third party vendors of expected crowds and customers.
+> [!TIP]
+> *Changed as of 13 April 2026 for simplicity.*
+A venue management company that maintains and operates stadiuyms and thearters primarily for concerts has determined that no existing solutions on the market fit their needs. They would like to build a new Venue Management System that suits their needs. It should be able to handle seat allocation, concert groups and times, arrival and departures and associated check-ins. 
 
 ## 4-5 use cases
-1. Gathering and reporting venue capacity & expected patronage to all organising parties.
-2. Allowing viewers to allocate and book seats, report their preferences and provide information on arrival and departure times.
-3. Producing setlists according to patron arrival or departure times.
-4. Allowing patrons to link streaming/ MOD services for more engagement, and to provide data about listening habits
-5. Provides reporting 2 analytics data to help bands decide if the region should be served in the future.
+1. **For Concertgoers:** Handle seat allocation based on event times and seating tiers.
+2. **For Concert Organisers:** Handle the booking of timeslots for concerts.
+3. **For Venue Organisers:** Handle check-ins and departures.
+4. **For Venue Management** Provide analytics data and capacity information.
+
+---
+
+## Structure:
+
+There will be 3 atomic base classes: the `Seat`, the `Event` and the `Venue`.
+
+1. `Seat`
+    - Represents a single seat.
+    - A `Seat` can be assigned to a `Booking`.
+
+2. `Event`
+    - Represents a timeslot in which an event will happen. Such as a concert.
+    - An `Event` contains a timeslot and a name and a description.
+
+3. `Venue`
+    - Represents a venue which contains Arrays of Seats, and an Array of Events.
+    - To handle things such as different seating areas, the `Event` will contain several Arrays of `Seat`s - I think we should create a `SeatingArea` class for this. 
+    
