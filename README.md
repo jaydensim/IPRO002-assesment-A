@@ -31,4 +31,21 @@ There will be 3 atomic base classes: the `Seat`, the `Event` and the `Venue`.
 3. `Venue`
     - Represents a venue which contains Arrays of Seats, and an Array of Events.
     - To handle things such as different seating areas, the `Event` will contain several Arrays of `Seat`s - I think we should create a `SeatingArea` class for this. 
-    
+
+
+### System Overview
+
+#### VenueManager
+Initalises and holds lookup tables for `Venue`s `Seat`s, `Event`s. Venue holds information about the seating class and so on.
+
+
+### Class Definitions
+
+#### `Seat`
+Each `Seat` should define:
+- The class type of seat (predefined or not, i'm not sure. maybe we define in venue management or something but this should be a numeric value to allow for sorting)
+- A few IDs.
+    - A seat UUID.
+    - A numerical Area/Row/Seat number
+- A seat Display Name.
+- A linked booking ID, if it has one.
