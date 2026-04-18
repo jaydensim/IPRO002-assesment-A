@@ -8,11 +8,27 @@ public class Booking {
 
     private String customerName;
 
-    Booking(String id, String eventId, String[] seatIds, String customerName) {
+    public Booking(String id, String eventId, String[] seatIds, String customerName) {
         this.id = id;
         this.eventId = eventId;
         this.seatIds = seatIds;
         this.customerName = customerName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public String[] getSeatIds() {
+        return seatIds;
+    }
+
+    public String getCustomerName() {
+        return customerName;
     }
 
     public String toString() {

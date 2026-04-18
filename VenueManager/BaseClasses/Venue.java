@@ -12,6 +12,7 @@ public class Venue {
 
     public SeatingArea[] seatingAreas;
     public static HashMap<String, Seat> seats;
+    public HashMap<String, Booking> bookings;
 
     private Event[] events;
 
@@ -21,6 +22,7 @@ public class Venue {
         this.description = description;
         this.seatingAreas = seatingAreas;
         this.events = new Event[0];
+        this.bookings = new HashMap<String, Booking>();
     }
 
     public String toString() {

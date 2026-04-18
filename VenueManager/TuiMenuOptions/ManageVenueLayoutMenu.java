@@ -32,21 +32,14 @@ public class ManageVenueLayoutMenu {
             } else if (choice == 2) {
                 menuSeatingAreas();
             } else if (choice == 3) {
-                menuSeats();
+                listSeats();
             }
         }
     }
 
     private void menuVenueDetails() {
-        Integer choice = tui.renderMultiChoicePrompt("Venue Details",
-                "Maintain venue metadata.",
-                new String[] { "Create Venue Metadata", "Delete Venue Metadata" });
+        tui.renderDisplayPrompt("Venue Details", this.vm.venue.toString());
 
-        if (choice == 1) {
-            placeholder("TODO: Implement create venue metadata flow.");
-        } else if (choice == 2) {
-            placeholder("TODO: Implement delete venue metadata flow.");
-        }
     }
 
     private void menuSeatingAreas() {
@@ -60,20 +53,6 @@ public class ManageVenueLayoutMenu {
             placeholder("TODO: Implement remove seating area.");
         } else if (choice == 3) {
             listSeatingAreas();
-        }
-    }
-
-    private void menuSeats() {
-        Integer choice = tui.renderMultiChoicePrompt("Seats",
-                "Maintain seats in each seating area.",
-                new String[] { "Create Seat", "Delete Seat", "List Seats" });
-
-        if (choice == 1) {
-            placeholder("TODO: Implement add seat flow.");
-        } else if (choice == 2) {
-            placeholder("TODO: Implement remove seat flow.");
-        } else if (choice == 3) {
-            listSeats();
         }
     }
 

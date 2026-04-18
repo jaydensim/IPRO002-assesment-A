@@ -189,37 +189,11 @@ public class TerminalInterface {
     }
 
     private int readChoiceInput() {
-        String ttyConfig = null;
-        try {
-            ttyConfig = runShellCommand("stty -g < /dev/tty").trim();
-            runShellCommand("stty -icanon -echo min 1 time 0 < /dev/tty");
-            int input = System.in.read();
-
-            // Keep prompt output tidy after non-canonical input.
-            System.out.println();
-            return input;
-        } catch (Exception e) {
-            return readChoiceInputFallback();
-        } finally {
-            try {
-                if (ttyConfig != null && !ttyConfig.isEmpty()) {
-                    runShellCommand("stty " + ttyConfig + " < /dev/tty");
-                } else {
-                    runShellCommand("stty sane < /dev/tty");
-                }
-            } catch (Exception ignored) {
-                // do nothing
-            }
-        }
-    }
-
-    private int readChoiceInputFallback() {
         try {
             int input = System.in.read();
-            if (System.in.available() > 0) {
-                while (System.in.available() > 0) {
-                    System.in.read();
-                }
+            int next;
+            while ((next = System.in.read()) != '\n' && next != -1) {
+                // consume the rest of the line to keep input state clean
             }
             return input;
         } catch (Exception e) {
@@ -234,18 +208,6 @@ public class TerminalInterface {
             return "";
         }
         return input;
-    }
-
-    private String runShellCommand(String command) throws Exception {
-        Process process = Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", command });
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        StringBuilder output = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            output.append(line);
-        }
-        process.waitFor();
-        return output.toString();
     }
 
     private void renderBlank() {

@@ -28,7 +28,7 @@ public class VenueManager {
         for (SeatingArea sa : this.venue.seatingAreas) {
             for (int i = 0; i < 10; i++) {
                 String seatId = sa.id + "-" + (i + 1);
-                Seat seat = new Seat(UUID.randomUUID().toString(), sa.id, sa.name, "Seat " + sa.id + (i + 1), true);
+                Seat seat = new Seat(UUID.randomUUID().toString(), sa.id, "Seat " + sa.id + (i + 1), null, true);
                 if (venue.seats == null) {
                     venue.seats = new HashMap<String, Seat>();
                 }

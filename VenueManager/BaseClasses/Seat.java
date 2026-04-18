@@ -25,4 +25,32 @@ public class Seat {
 
     }
 
+    public String getPosArea() {
+        return posArea;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public boolean isBookable() {
+        return Boolean.TRUE.equals(isBookable);
+    }
+
+    public boolean isAvailable() {
+        return isBookable() && (bookingId == null || bookingId.isEmpty());
+    }
+
+    public void assignBooking(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public void clearBooking() {
+        this.bookingId = null;
+    }
+
 }
