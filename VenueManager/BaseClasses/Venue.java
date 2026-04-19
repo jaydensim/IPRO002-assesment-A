@@ -13,15 +13,14 @@ public class Venue {
     public SeatingArea[] seatingAreas;
     public static HashMap<String, Seat> seats;
     public HashMap<String, Booking> bookings;
-
-    private Event[] events;
+    public HashMap<String, Event> events;
 
     public Venue(String id, String name, String description, SeatingArea[] seatingAreas) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.seatingAreas = seatingAreas;
-        this.events = new Event[0];
+        this.events = new HashMap<String, Event>();
         this.bookings = new HashMap<String, Booking>();
     }
 

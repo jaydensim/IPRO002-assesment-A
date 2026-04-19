@@ -6,7 +6,6 @@ import VenueManager.BaseClasses.Seat;
 import VenueManager.InteractionClasses.TerminalInterface;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +21,7 @@ public class BookSeatsMenu {
 
     public void show() {
         Integer choice = tui.renderMultiChoicePrompt("Book Seats",
-                "Concertgoer use case: allocate or review seat bookings.",
+                "Concertgoer use case: allocate or review seat bookings by event.",
                 new String[] { "Book Seat", "View Existing Booking", "Cancel Booking" });
 
         if (choice == 1) {
@@ -35,8 +34,18 @@ public class BookSeatsMenu {
     }
 
     private void flowCreateBooking() {
+        if (vm.venue.events == null || vm.venue.events.isEmpty()) {
+            placeholder("No events exist yet. Create an event first.");
+            return;
+        }
+
         if (vm.venue.seats == null || vm.venue.seats.isEmpty()) {
             placeholder("No seats exist in this venue yet.");
+            return;
+        }
+
+        String eventId = chooseEvent();
+        if (eventId == null) {
             return;
         }
 
@@ -71,7 +80,7 @@ public class BookSeatsMenu {
 
         String confirmation = tui.renderYNPrompt(
                 "Book Seat - Step 3/3",
-                "Confirm booking?\nCustomer: " + customerName + "\nSeat: " + seatId);
+                "Confirm booking?\nCustomer: " + customerName + "\nEvent: " + eventId + "\nSeat: " + seatId);
 
         if (!confirmation.equals("Y")) {
             placeholder("Booking cancelled by user.");
@@ -83,12 +92,13 @@ public class BookSeatsMenu {
         }
 
         String bookingId = UUID.randomUUID().toString();
-        Booking booking = new Booking(bookingId, "UNASSIGNED_EVENT", new String[] { seatId }, customerName);
+        Booking booking = new Booking(bookingId, eventId, new String[] { seatId }, customerName);
         vm.venue.bookings.put(bookingId, booking);
-        selectedSeat.assignBooking(bookingId);
+        selectedSeat.assignBooking(bookingId, eventId);
 
         tui.renderDisplayPrompt("Booking Created",
-                "Booking ID: " + bookingId + "\nCustomer: " + customerName + "\nSeat: " + seatId);
+                "Booking ID: " + bookingId + "\nCustomer: " + customerName + "\nEvent: " + eventId
+                        + "\nSeat: " + seatId);
     }
 
     private void flowViewBooking() {
@@ -109,7 +119,7 @@ public class BookSeatsMenu {
             return;
         }
 
-        tui.renderDisplayPrompt("Booking Details", booking.toString());
+        tui.renderDisplayPrompt("Booking Details", formatBookingDetails(booking));
     }
 
     private void flowCancelBooking() {
@@ -132,7 +142,7 @@ public class BookSeatsMenu {
 
         String confirmation = tui.renderYNPrompt(
                 "Cancel Booking",
-                "Cancel this booking?\n" + booking.toString());
+                "Cancel this booking?\n" + formatBookingDetails(booking));
 
         if (!confirmation.equals("Y")) {
             placeholder("Cancellation aborted.");
@@ -153,19 +163,45 @@ public class BookSeatsMenu {
         tui.renderDisplayPrompt("Booking Cancelled", "Removed booking: " + bookingId);
     }
 
+    private String chooseEvent() {
+        List<String> eventIds = new ArrayList<>(vm.venue.events.keySet());
+        java.util.Collections.sort(eventIds);
+
+        String[] options = new String[eventIds.size()];
+        for (int i = 0; i < eventIds.size(); i++) {
+            options[i] = eventIds.get(i) + ": " + vm.venue.events.get(eventIds.get(i)).getName();
+        }
+
+        Integer choice = tui.renderMultiChoicePrompt("Select Event",
+                "Choose the event this seat booking is for.", options);
+
+        if (choice == 0) {
+            return null;
+        }
+
+        return eventIds.get(choice - 1);
+    }
+
     private String buildAvailableSeatList() {
         List<String> seatIds = new ArrayList<>(vm.venue.seats.keySet());
-        Collections.sort(seatIds);
+        java.util.Collections.sort(seatIds);
 
         StringBuilder output = new StringBuilder();
         for (String seatId : seatIds) {
             Seat seat = vm.venue.seats.get(seatId);
             if (seat != null && seat.isAvailable()) {
-                output.append(seatId).append(", ");
+                output.append(seatId).append("\n");
             }
         }
 
         return output.toString().trim();
+    }
+
+    private String formatBookingDetails(Booking booking) {
+        String seatText = booking.getSeatIds() == null ? "" : String.join(", ", booking.getSeatIds());
+
+        return "Booking ID: " + booking.getId() + "\nCustomer: " + booking.getCustomerName() + "\nEvent: "
+                + booking.getEventId() + "\nSeats: " + seatText;
     }
 
     private void placeholder(String message) {

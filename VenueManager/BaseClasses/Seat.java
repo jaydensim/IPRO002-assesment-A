@@ -7,12 +7,13 @@ public class Seat {
 
     private String displayName;
 
+    private String eventId;
     private String bookingId;
     private Boolean isBookable;
 
     public String toString() {
-        return "Seat {id='" + id + "', posArea='" + posArea + "', displayName='" + displayName + "', bookingId='"
-                + bookingId + "', isBookable='" + isBookable
+        return "Seat {id='" + id + "', posArea='" + posArea + "', displayName='" + displayName + "', eventId='"
+                + eventId + "', bookingId='" + bookingId + "', isBookable='" + isBookable
                 + "'}";
     }
 
@@ -33,6 +34,10 @@ public class Seat {
         return displayName;
     }
 
+    public String getEventId() {
+        return eventId;
+    }
+
     public String getBookingId() {
         return bookingId;
     }
@@ -45,12 +50,18 @@ public class Seat {
         return isBookable() && (bookingId == null || bookingId.isEmpty());
     }
 
-    public void assignBooking(String bookingId) {
+    public void assignBooking(String bookingId, String eventId) {
         this.bookingId = bookingId;
+        this.eventId = eventId;
     }
 
     public void clearBooking() {
         this.bookingId = null;
+        this.eventId = null;
+    }
+
+    public void setBookable(boolean isBookable) {
+        this.isBookable = isBookable;
     }
 
 }

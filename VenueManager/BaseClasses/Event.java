@@ -2,11 +2,24 @@ package VenueManager.BaseClasses;
 
 public class Event {
 
-    private String id;
+    public String id;
+    public String name;
 
-    private String name;
-    private String description;
+    public Event(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-    private String timeslotId;
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String toString() {
+        return "Event {id='" + id + "', name='" + name + "'}";
+    }
 
 }
